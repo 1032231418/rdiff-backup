@@ -12,6 +12,10 @@ python:
   - 3.8
   - 3.9-dev  # FIXME Python 3.9 is still only release candidate
 
+env:
+  global:
+    - PY_WHEEL_BIN_DIRS="/opt/python/cp36*/bin /opt/python/cp37*/bin /opt/python/cp38*/bin /opt/python/cp39*/bin"
+
 #=== DEPLOYMENTS ===
 # - everything to GitHub releases
 # - wheels to PyPI (if tag looks like an alpha, beta, rc or final release)
@@ -144,7 +148,7 @@ jobs:
       install:
         - docker pull $DOCKER_IMAGE
       script:
-        - docker run --rm -e PLAT=$PLAT -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/tools/build_wheels.sh "/opt/python/cp36*/bin" "/opt/python/cp37*/bin" "/opt/python/cp38*/bin" "/opt/python/cp39*/bin"
+        - docker run --rm -e PLAT=$PLAT -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/tools/build_wheels.sh $PY_WHEEL_BIN_DIRS
         - ls dist/
     - os: linux
       services:
@@ -156,7 +160,7 @@ jobs:
       install:
         - docker pull $DOCKER_IMAGE
       script:
-        - docker run --rm -e PLAT=$PLAT -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/tools/build_wheels.sh "/opt/python/cp36*/bin" "/opt/python/cp37*/bin" "/opt/python/cp38*/bin" "/opt/python/cp39*/bin"
+        - docker run --rm -e PLAT=$PLAT -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/tools/build_wheels.sh $PY_WHEEL_BIN_DIRS
         - ls dist/
     - os: linux
       services:
@@ -167,7 +171,7 @@ jobs:
       install:
         - docker pull $DOCKER_IMAGE
       script:
-        - docker run --rm -e PLAT=$PLAT -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/tools/build_wheels.sh "/opt/python/cp36*/bin" "/opt/python/cp37*/bin" "/opt/python/cp38*/bin" "/opt/python/cp39*/bin"
+        - docker run --rm -e PLAT=$PLAT -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/tools/build_wheels.sh $PY_WHEEL_BIN_DIRS
         - ls dist/
 
     #--- Build Debian packages ---
